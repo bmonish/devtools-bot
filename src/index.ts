@@ -13,9 +13,9 @@ client.on(Events.ClientReady, async (c) => {
     botCommands.forEach(async (command) => {
       const existingCommand = commands?.find((x) => x.name === command.name);
 
-      if (!existingCommand) {
-        await guild.commands.create(command);
-      }
+      // if (!existingCommand) {
+      await guild.commands.create(command);
+      // }
     });
   });
 });

@@ -1,4 +1,4 @@
-import { CacheType, Interaction } from "discord.js";
+import { CacheType, EmbedBuilder, Interaction } from "discord.js";
 
 const GET_BLOB_LINK = "GET_BLOB_LINK";
 
@@ -19,6 +19,12 @@ export const jsonCommand = {
       required: true,
       type: 3,
     },
+    {
+      name: "title",
+      description: "The title of the embed",
+      required: false,
+      type: 3,
+    },
   ],
   execute: async (interaction: Interaction<CacheType>) => {
     if (!interaction.isCommand()) return;
@@ -27,9 +33,12 @@ export const jsonCommand = {
 
     const operationOption = options.get("operation");
     const textOption = options.get("text");
+    const titleOption = options.get("title");
+
     if (operationOption && textOption) {
       const operation = operationOption.value as string;
       const text = textOption.value as string;
+      const title = titleOption?.value as string;
 
       switch (operation) {
         case GET_BLOB_LINK:
@@ -46,9 +55,27 @@ export const jsonCommand = {
             );
             const headers = response.headers;
             const location = headers.get("location") || "";
-            await interaction.reply(
-              location.replace("/api/jsonBlob", "").replace("http:", "https:")
-            );
+            const url = location
+              .replace("/api/jsonBlob", "")
+              .replace("http:", "https:");
+
+            if (title) {
+              const embed = new EmbedBuilder()
+                .setTitle("JSON Blob")
+                .setDescription("JSON Blob created successfully!")
+                .setFields([
+                  { name: "Title", value: title },
+                  {
+                    name: "Link",
+                    value: url,
+                  },
+                ])
+                .setURL(url);
+              await interaction.reply({ embeds: [embed] });
+              return;
+            }
+
+            await interaction.reply(url);
           }
           break;
       }
