@@ -1,4 +1,4 @@
-import { CacheType, Interaction } from "discord.js";
+import { CacheType, EmbedBuilder, Interaction } from "discord.js";
 import moment from "moment-timezone";
 
 const CURRENT_TIME_IN_MILLIS = "CURRENT_TIME_IN_MILLIS";
@@ -48,9 +48,23 @@ export const timeCommand = {
           }
 
           const value = valueOption.value as number;
-          await interaction.reply(
-            moment(value).format("YYYY-MM-DD hh:mm:ss a")
-          );
+          const embed = new EmbedBuilder()
+            .setTitle("Millis to Timestamp")
+            .setDescription("Given millis converted to timestamp")
+            .setFields([
+              { name: "Input", value: value.toString() },
+              {
+                name: "UTC",
+                value: moment(value).utc().format("YYYY-MM-DD hh:mm:ss a"),
+              },
+              {
+                name: "GMT+5:30",
+                value: moment(value)
+                  .utcOffset(330)
+                  .format("YYYY-MM-DD hh:mm:ss a"),
+              },
+            ]);
+          await interaction.reply({ embeds: [embed] });
           break;
         }
       }
