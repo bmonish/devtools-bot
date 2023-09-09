@@ -2,6 +2,7 @@ import { CacheType, EmbedBuilder, Interaction } from "discord.js";
 import moment from "moment-timezone";
 
 const CURRENT_TIME_IN_MILLIS = "CURRENT_TIME_IN_MILLIS";
+const CURRENT_TIME_IN_TIMESTAMP = "CURRENT_TIME_IN_TIMESTAMP";
 const MILLIS_TO_TIMESTAMP = "MILLIS_TO_TIMESTAMP";
 
 export const timeCommand = {
@@ -15,6 +16,7 @@ export const timeCommand = {
       type: 3,
       choices: [
         { name: "Current time in millis", value: CURRENT_TIME_IN_MILLIS },
+        { name: "Current time in timestamp", value: CURRENT_TIME_IN_TIMESTAMP },
         { name: "Millis to Timestamp", value: MILLIS_TO_TIMESTAMP },
       ],
     },
@@ -40,6 +42,26 @@ export const timeCommand = {
           await interaction.reply(moment().valueOf().toString());
           break;
         }
+
+        case CURRENT_TIME_IN_TIMESTAMP: {
+          const embed = new EmbedBuilder()
+            .setTitle("Current Time")
+            .setDescription("Current time in timestamp")
+            .setFields([
+              {
+                name: "UTC",
+                value: moment().utc().format("YYYY-MM-DD hh:mm:ss a"),
+              },
+              {
+                name: "GMT+5:30",
+                value: moment().utcOffset(330).format("YYYY-MM-DD hh:mm:ss a"),
+              },
+            ]);
+
+          await interaction.reply({ embeds: [embed] });
+          break;
+        }
+
         case MILLIS_TO_TIMESTAMP: {
           const valueOption = options.get("value");
           if (!valueOption) {
