@@ -1,4 +1,4 @@
-import { CacheType, Interaction } from "discord.js";
+import { CacheType, EmbedBuilder, Interaction } from "discord.js";
 
 const COUNT = "COUNT";
 
@@ -36,9 +36,18 @@ export const charCommand = {
           const charCount = text.length;
           const wordCount = text.split(" ").length;
 
-          await interaction.reply(
-            `Character count: ${charCount}\nWord count: ${wordCount}`
-          );
+          const embed = new EmbedBuilder()
+            .setTitle("Count")
+            .setDescription("Character and word count")
+            .setColor("Blue");
+
+          embed.addFields([
+            { name: "Input", value: text },
+            { name: "Char Count", value: `${charCount}`, inline: true },
+            { name: "Word Count", value: `${wordCount}`, inline: true },
+          ]);
+
+          await interaction.reply({ embeds: [embed] });
           break;
         }
       }
