@@ -2,6 +2,7 @@ import { CacheType, Interaction } from "discord.js";
 import moment from "moment-timezone";
 
 const CURRENT_TIME_IN_MILLIS = "CURRENT_TIME_IN_MILLIS";
+const MILLIS_TO_TIMESTAMP = "MILLIS_TO_TIMESTAMP";
 
 export const timeCommand = {
   name: "time",
@@ -14,7 +15,14 @@ export const timeCommand = {
       type: 3,
       choices: [
         { name: "Current time in millis", value: CURRENT_TIME_IN_MILLIS },
+        { name: "Millis to Timestamp", value: MILLIS_TO_TIMESTAMP },
       ],
+    },
+    {
+      name: "value",
+      description: "The value to convert",
+      required: false,
+      type: 4,
     },
   ],
 
@@ -30,6 +38,19 @@ export const timeCommand = {
       switch (operation) {
         case CURRENT_TIME_IN_MILLIS: {
           await interaction.reply(moment().valueOf().toString());
+          break;
+        }
+        case MILLIS_TO_TIMESTAMP: {
+          const valueOption = options.get("value");
+          if (!valueOption) {
+            await interaction.reply("⚠️ Value is required for this operation");
+            return;
+          }
+
+          const value = valueOption.value as number;
+          await interaction.reply(
+            moment(value).format("YYYY-MM-DD hh:mm:ss a")
+          );
           break;
         }
       }
