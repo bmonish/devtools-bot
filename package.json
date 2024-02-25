@@ -15,10 +15,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.14.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.12.5",
+    "@types/uuid": "^9.0.8",
     "tsx": "^4.7.2",
     "typescript": "^5.4.4"
   }

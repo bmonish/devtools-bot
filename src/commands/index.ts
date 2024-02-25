@@ -1,7 +1,8 @@
 import { base64command } from "./base64";
+import { generateCommand } from "./generate";
 import { jsonCommand } from "./json";
 
-const commands = [base64command, jsonCommand];
+const commands = [base64command, generateCommand, jsonCommand];
 
 const botCommandsMap: { [key: string]: any } = {};
 
