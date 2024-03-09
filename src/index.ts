@@ -1,4 +1,5 @@
 import { Client, Events, EmbedBuilder } from "discord.js";
+import botCommands from "./commands";
 
 const client = new Client({
   intents: ["Guilds", "GuildMessages", "MessageContent"],
@@ -9,33 +10,13 @@ client.on(Events.ClientReady, async (c) => {
 
   client.guilds.cache.forEach(async (guild) => {
     const commands = await guild.commands.fetch();
-    const base64Command = commands?.find(
-      (command) => command.name === "base64"
-    );
-    if (!base64Command) {
-      await guild.commands.create({
-        name: "base64",
-        description: "Encode / Decode text to base64",
-        options: [
-          {
-            name: "operation",
-            description: "Whether to encode / decode the text",
-            required: true,
-            type: 3,
-            choices: [
-              { name: "Encode", value: "encode" },
-              { name: "Decode", value: "decode" },
-            ],
-          },
-          {
-            name: "text",
-            description: "The text to encode / decode",
-            required: true,
-            type: 3,
-          },
-        ],
-      });
-    }
+    botCommands.forEach(async (command) => {
+      const existingCommand = commands?.find((x) => x.name === command.name);
+
+      if (!existingCommand) {
+        await guild.commands.create(command);
+      }
+    });
   });
 });
 
