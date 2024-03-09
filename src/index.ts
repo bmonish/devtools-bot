@@ -1,4 +1,4 @@
-import { Client, Events } from "discord.js";
+import { Client, Events, EmbedBuilder } from "discord.js";
 
 const client = new Client({
   intents: ["Guilds", "GuildMessages", "MessageContent"],
@@ -50,13 +50,28 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (operationOption && textOption) {
       const operation = operationOption.value as string;
       const text = textOption.value as string;
+
+      let result = "";
+      const embed = new EmbedBuilder().setTitle("Base64");
+
       if (operation === "decode") {
-        const decoded = Buffer.from(text, "base64").toString("utf-8");
-        interaction.reply(decoded);
+        embed.setColor("Green");
+        embed.setDescription("Given base64 text decoded to utf-8");
+        embed.setURL("https://www.base64decode.org/");
+        result = Buffer.from(text, "base64").toString("utf-8");
       } else {
-        const encoded = Buffer.from(text).toString("base64");
-        interaction.reply(encoded);
+        embed.setColor("Blue");
+        embed.setDescription("Given text encoded to base64");
+        embed.setURL("https://www.base64encode.org/");
+        result = Buffer.from(text).toString("base64");
       }
+
+      embed.addFields([
+        { name: "Input", value: text, inline: true },
+        { name: "Output", value: result, inline: true },
+      ]);
+
+      await interaction.reply({ embeds: [embed] });
     }
   }
 });
