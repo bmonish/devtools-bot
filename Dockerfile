@@ -15,4 +15,4 @@ COPY . .
 
 RUN pnpm build
 
-ENTRYPOINT ["pnpm", "start"]
+CMD ["pnpm", "start"]
