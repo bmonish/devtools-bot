@@ -1,5 +1,8 @@
 FROM node:20.11.1-alpine
 
+ARG BOT_TOKEN
+ENV BOT_TOKEN=$BOT_TOKEN
+
 WORKDIR /usr/src/app
 
 COPY package.json .

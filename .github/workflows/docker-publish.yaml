@@ -18,7 +18,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
-          docker build . -t ghcr.io/bmonish/devtools-bot:latest -t ghcr.io/bmonish/devtools-bot:${{github.sha}}
+          docker build --build-arg BOT_TOKEN=$BOT_TOKEN . -t ghcr.io/bmonish/devtools-bot:latest -t ghcr.io/bmonish/devtools-bot:${{github.sha}}
           docker push ghcr.io/bmonish/devtools-bot:latest
           docker push ghcr.io/bmonish/devtools-bot:${{github.sha}}
