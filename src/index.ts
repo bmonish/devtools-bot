@@ -1,5 +1,8 @@
 import { Client, Events } from "discord.js";
+import express from "express";
 import botCommands, { botCommandsMap } from "./commands";
+
+const app = express();
 
 const client = new Client({
   intents: ["Guilds", "GuildMessages", "MessageContent"],
@@ -35,3 +38,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.login(process.env.BOT_TOKEN);
+
+app.get("/status", (req, res) => {
+  res.json({
+    status: "ok",
+    version: process.version,
+    platform: process.platform,
+  });
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
