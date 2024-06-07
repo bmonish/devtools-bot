@@ -1,4 +1,4 @@
-FROM node:20.11.1-alpine
+FROM node:20.13.0-alpine
 
 ARG BOT_TOKEN
 ENV BOT_TOKEN=$BOT_TOKEN

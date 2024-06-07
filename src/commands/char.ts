@@ -2,6 +2,7 @@ import { CacheType, EmbedBuilder, Interaction } from "discord.js";
 
 const COMPARE = "COMPARE";
 const COUNT = "COUNT";
+const LOWER_CASE = "LOWER_CASE";
 
 export const charCommand = {
   name: "text",
@@ -15,6 +16,7 @@ export const charCommand = {
       choices: [
         { name: "Count", value: COUNT },
         { name: "Compare", value: COMPARE },
+        { name: "Lower Case", value: LOWER_CASE },
       ],
     },
     {
@@ -86,6 +88,13 @@ export const charCommand = {
 
           await interaction.reply({ embeds: [embed] });
           break;
+        }
+
+        case LOWER_CASE: {
+          const text = options.get("text")?.value as string;
+          const lowerCaseText = text.toLowerCase();
+
+          await interaction.reply(lowerCaseText);
         }
       }
     }
